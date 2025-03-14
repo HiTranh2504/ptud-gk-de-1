@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .delete-post-container {
+        max-width: 500px;
+        margin: auto;
+        padding: 20px;
+        text-align: center;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .delete-post-container h2 {
+        color: #dc3545;
+    }
+    .delete-post-container p {
+        margin: 15px 0;
+        font-size: 1.1em;
+    }
+    .delete-buttons {
+        margin-top: 20px;
+    }
+    .delete-buttons button {
+        background: #dc3545;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+    }
+    .delete-buttons button:hover {
+        background: #b02a37;
+    }
+    .delete-buttons a {
+        display: inline-block;
+        margin-left: 15px;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 1em;
+        color: white;
+        background: #6c757d;
+    }
+    .delete-buttons a:hover {
+        background: #5a6268;
+    }
+</style>
+
+<div class="delete-post-container">
+    <h2>Delete Post</h2>
+    <form method="post">
+        {% csrf_token %}
+        <p>Are you sure that you want to delete the post "{{ post.title }}"?</p>
+        <div class="delete-buttons">
+            <button type="submit">Yes, Delete</button>
+            <a href="{% url 'posts' %}">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

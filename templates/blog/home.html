@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .post-list-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        text-align: center;
+    }
+    .post-item {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        text-align: left;
+    }
+    .post-item h3 {
+        margin: 0;
+        color: #007bff;
+    }
+    .post-item p {
+        margin: 10px 0;
+        color: #333;
+    }
+    .post-item img {
+        max-width: 100%;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    .post-actions {
+        margin-top: 10px;
+    }
+    .post-actions a {
+        text-decoration: none;
+        color: white;
+        background: #007bff;
+        padding: 8px 12px;
+        border-radius: 5px;
+        margin-right: 5px;
+        display: inline-block;
+    }
+    .post-actions a:hover {
+        background: #0056b3;
+    }
+    .delete-link {
+        background: #dc3545 !important;
+    }
+    .delete-link:hover {
+        background: #b02a37 !important;
+    }
+    hr {
+        border: none;
+        height: 1px;
+        background: #ddd;
+        margin: 20px 0;
+    }
+</style>
+
+<div class="post-list-container">
+    <h1>All Posts</h1>
+
+    {% for post in posts %}
+    <div class="post-item">
+        <h3>{{ post.title }}</h3>
+        <p><strong>Published by {{ post.author.username }}</strong></p>
+        <p>{{ post.content }}</p>
+        {% if post.image_url %}
+            <p><img src="{{ post.image_url }}" alt="Post Image"></p>
+        {% endif %}
+
+        <div class="post-actions">
+            <a href="{% url 'post_detail' post.id %}">View Comments</a>
+            {% if post.author == request.user %}
+                <a href="{% url 'post-edit' post.id %}">Edit</a>
+                <a href="{% url 'post-delete' post.id %}" class="delete-link">Delete</a>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p>No posts available.</p>
+    {% endfor %}
+</div>
+
+{% endblock content %}

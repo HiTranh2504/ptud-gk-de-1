@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .post-detail-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        text-align: left;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .post-detail-container h2 {
+        color: #007bff;
+    }
+    .post-detail-container img {
+        max-width: 100%;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    .post-meta {
+        font-size: 0.9em;
+        color: #666;
+        margin-bottom: 15px;
+    }
+    .comments-section {
+        margin-top: 20px;
+        padding-top: 10px;
+        border-top: 1px solid #ddd;
+    }
+    .comment {
+        background: #f9f9f9;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    .comment strong {
+        color: #007bff;
+    }
+    .comment-form {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+    .comment-form button {
+        background: #007bff;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .comment-form button:hover {
+        background: #0056b3;
+    }
+    .back-link {
+        display: block;
+        margin-top: 20px;
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .back-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="post-detail-container">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.content }}</p>
+    {% if post.image_url %}
+        <img src="{{ post.image_url }}" alt="Post Image">
+    {% endif %}
+    <p class="post-meta"><small>Published by {{ post.author }}</small></p>
+
+    <div class="comments-section">
+        <h3>Comments:</h3>
+        {% for comment in comments %}
+            <div class="comment">
+                <p><strong>{{ comment.user.username }}:</strong> {{ comment.content }}</p>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+    </div>
+
+    {% if user.is_authenticated %}
+        <div class="comment-form">
+            <h3>Add a Comment</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    {% else %}
+        <p><a href="{% url 'login' %}" class="back-link">Login</a> to add a comment.</p>
+    {% endif %}
+
+    <a href="{% url 'posts' %}" class="back-link">Back to All Posts</a>
+</div>
+
+{% endblock %}
